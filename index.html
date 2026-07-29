@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Relev. Vial">
+<title>Relevamiento Vial 2026 — Posadas · Garupá</title>
+<style>
+:root{
+  --bg:#f5f6fa; --card:#ffffff; --ink:#16161f; --muted:#5c6070;
+  --brand:#1a1a2e; --accent:#f7b500; --accent-ink:#241a00;
+  --ok:#1f8a4c; --no:#c0392b; --so:#7f8c8d; --sri:#2467c7;
+  --line:#e1e3ec; --radius:14px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px}
+body{padding-bottom:88px}
+header{background:var(--brand);color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 10px rgba(0,0,0,.25)}
+header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.3px}
+header .sub{font-size:12px;opacity:.75;margin-top:2px}
+.badge{display:inline-block;background:var(--accent);color:var(--accent-ink);
+  font-weight:700;font-size:12px;border-radius:999px;padding:2px 10px;margin-left:6px}
+main{padding:14px 12px 20px;max-width:560px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card h2{margin:0 0 10px;font-size:15px;font-weight:700;color:var(--brand)}
+label.fld{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:10px 0 5px}
+input[type=text],select{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+  font-size:16px;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;
+  padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;user-select:none;min-height:44px}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.chip.ok.on{background:var(--ok);border-color:var(--ok)}
+.chip.no.on{background:var(--no);border-color:var(--no)}
+.chip.so.on{background:var(--so);border-color:var(--so)}
+.chip.sri.on{background:var(--sri);border-color:var(--sri)}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;
+  font-weight:700;cursor:pointer;margin-top:10px}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.dark{background:var(--brand);color:#fff}
+.btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.danger{background:#fdecea;color:var(--no);border:1.5px solid #f5c6c0}
+.btn:disabled{opacity:.45}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;text-align:center;padding:14px 6px;border-radius:12px;font-weight:800;font-size:16px;
+  border:2px solid var(--line);background:#fff;cursor:pointer}
+.tab.on{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.occ{border:1.5px dashed var(--line);border-radius:12px;padding:10px;margin-top:10px}
+.occ .t{font-weight:800;font-size:14px;color:var(--brand);display:flex;justify-content:space-between;align-items:center}
+.occ .rm{background:none;border:none;color:var(--no);font-size:13px;font-weight:700;cursor:pointer;padding:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.counter{display:flex;gap:10px;margin-bottom:12px}
+.cnt{flex:1;background:var(--brand);color:#fff;border-radius:12px;padding:10px;text-align:center}
+.cnt .n{font-size:26px;font-weight:800;line-height:1}
+.cnt .l{font-size:11px;opacity:.75;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.rec{border-bottom:1px solid var(--line);padding:10px 2px;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.rec .meta{color:var(--muted);font-size:12px}
+.rec button{background:none;border:none;color:var(--no);font-weight:700;cursor:pointer;font-size:13px;padding:6px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
+  display:flex;z-index:60;box-shadow:0 -2px 12px rgba(0,0,0,.08)}
+nav button{flex:1;padding:12px 4px 14px;background:none;border:none;font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer}
+nav button.on{color:var(--brand)}
+nav button .ico{display:block;font-size:20px;margin-bottom:2px}
+.screen{display:none}.screen.on{display:block}
+.pill-info{background:#eef4ff;border:1px solid #cfe0ff;color:#1d4e9e;border-radius:10px;
+  padding:10px 12px;font-size:13px;margin-bottom:12px;line-height:1.45}
+.warn{background:#fff8e1;border:1px solid #ffe08a;color:#7a5b00;border-radius:10px;
+  padding:10px 12px;font-size:13px;margin-bottom:12px;line-height:1.45}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:var(--brand);
+  color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;z-index:99;
+  opacity:0;transition:opacity .25s;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{opacity:1}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Relevamiento Vial 2026 <span class="badge" id="hdrPO">—</span></h1>
+  <div class="sub">Práctica Profesionalizante · Estadística · Posadas – Garupá</div>
+</header>
+
+<main>
+
+<!-- ====================== CONFIG ====================== -->
+<section class="screen on" id="scr-config">
+  <div class="pill-info">Completá estos datos <b>una sola vez al iniciar el turno</b>. Quedan asociados a cada vehículo que registres. Metodología: Manual Observacional ANSV 2017.</div>
+  <div class="card">
+    <h2>1 · Observador y punto</h2>
+    <label class="fld">Nombre del observador/a</label>
+    <input type="text" id="cfg-nombre" placeholder="Apellido y nombre" autocomplete="off">
+    <label class="fld">Punto de Observación (PO)</label>
+    <select id="cfg-po">
+      <option value="">— Elegí el PO —</option>
+      <optgroup label="Puntos de Observación — Garupá">
+        <option>PO-1 · Av. Las Américas e H. Yrigoyen · Garupá</option>
+        <option>PO-2 · Av. Las Américas y Alberto Bonin · Garupá</option>
+        <option>PO-3 · RN 105 y Río Salado · Garupá</option>
+      </optgroup>
+      <optgroup label="Puntos de Observación — Posadas">
+        <option>PO-4 · Cte. Rosales y Av. López Torres · Posadas</option>
+        <option>PO-5 · Av. Fco. de Haro y Blas Parera · Posadas</option>
+        <option>PO-6 · Av. Cabred y Av. Rademacher · Posadas</option>
+      </optgroup>
+      <option value="OTRO">Otro punto (alternativo)</option>
+    </select>
+    <div id="cfg-po-otro-wrap" style="display:none">
+      <label class="fld">Detalle del punto</label>
+      <input type="text" id="cfg-po-otro" placeholder="Ej.: intersección de calles ... · municipio">
+    </div>
+    <label class="fld">Turno</label>
+    <div class="chips" data-single="turno">
+      <div class="chip">Mañana</div><div class="chip">Tarde</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Condiciones del punto y la jornada</h2>
+    <label class="fld">Presencia de semáforo en el PO</label>
+    <div class="chips" data-single="semaforo">
+      <div class="chip ok">Sí</div><div class="chip no">No</div>
+    </div>
+    <label class="fld">Tipo de vía</label>
+    <div class="chips" data-single="via">
+      <div class="chip">Urbana</div><div class="chip">Rutera</div>
+    </div>
+    <label class="fld">Estado de la calzada</label>
+    <div class="chips" data-single="calzada">
+      <div class="chip">Buena</div><div class="chip">Regular</div><div class="chip">Mala</div>
+    </div>
+    <label class="fld">Iluminación</label>
+    <div class="chips" data-single="ilum">
+      <div class="chip">Diurna</div><div class="chip">Nocturna</div>
+    </div>
+    <label class="fld">Clima</label>
+    <div class="chips" data-single="clima">
+      <div class="chip">Despejado</div><div class="chip">Despejado y viento</div>
+      <div class="chip">Nublado</div><div class="chip">Nublado y viento</div>
+      <div class="chip">Lluvia</div><div class="chip">Lluvia y viento</div><div class="chip">Neblina</div>
+    </div>
+    <label class="fld">Sensación térmica</label>
+    <div class="chips" data-single="term">
+      <div class="chip">Cálido</div><div class="chip">Templado</div><div class="chip">Frío</div>
+    </div>
+  </div>
+  <button class="btn primary" id="btn-iniciar">Comenzar el registro →</button>
+  <p class="small" style="text-align:center">Fecha y día de la semana se registran automáticamente.</p>
+</section>
+
+<!-- ====================== REGISTRO ====================== -->
+<section class="screen" id="scr-reg">
+  <div class="counter">
+    <div class="cnt"><div class="n" id="cnt-a">0</div><div class="l">Autos</div></div>
+    <div class="cnt"><div class="n" id="cnt-m">0</div><div class="l">Motos</div></div>
+    <div class="cnt" style="background:var(--accent);color:var(--accent-ink)">
+      <div class="n" id="cnt-t">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" id="tab-auto">🚗 AUTOS</div>
+    <div class="tab" id="tab-moto">🏍️ MOTOS</div>
+  </div>
+
+  <!-- ---------- FORM AUTOS ---------- -->
+  <div id="form-auto">
+    <div class="card">
+      <h2>Vehículo</h2>
+      <label class="fld">Uso del vehículo</label>
+      <div class="chips" data-single="a-uso">
+        <div class="chip">Particular</div><div class="chip">Comercial / Institucional</div>
+      </div>
+      <div id="a-tipo-part">
+        <label class="fld">Tipo (particular)</label>
+        <div class="chips" data-single="a-tipop">
+          <div class="chip">Auto</div><div class="chip">Camioneta / 4x4</div><div class="chip">Furgoneta</div>
+        </div>
+      </div>
+      <div id="a-tipo-com" style="display:none">
+        <label class="fld">Tipo de transporte (comercial)</label>
+        <div class="chips" data-single="a-tipoc">
+          <div class="chip">Pasajeros</div><div class="chip">Carga</div><div class="chip">Servicios</div>
+        </div>
+      </div>
+      <label class="fld">Antigüedad</label>
+      <div class="chips" data-single="a-antig">
+        <div class="chip">− de 10 años</div><div class="chip">+ de 10 años</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Luces diurnas encendidas</label>
+      <div class="chips" data-single="a-luces">
+        <div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div>
+      </div>
+      <div id="a-sem-extra" style="display:none">
+        <label class="fld">Respeta el semáforo</label>
+        <div class="chips" data-single="a-resp">
+          <div class="chip ok">Sí</div><div class="chip no">No, cruza en amarillo/rojo</div><div class="chip so">S/O</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Conductor (P1)</h2>
+      <label class="fld">Sexo</label>
+      <div class="chips" data-single="a-p1-sexo">
+        <div class="chip">Masculino</div><div class="chip">Femenino</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Edad aproximada</label>
+      <div class="chips" data-single="a-p1-edad">
+        <div class="chip">15–24</div><div class="chip">25–39</div><div class="chip">40–59</div>
+        <div class="chip">60+</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Usa cinturón</label>
+      <div class="chips" data-single="a-p1-cint">
+        <div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Factores de distracción (podés marcar varios)</label>
+      <div class="chips" data-multi="a-p1-dist">
+        <div class="chip">Celular</div><div class="chip">Come o bebe</div><div class="chip">Fuma</div>
+        <div class="chip">Auriculares</div><div class="chip">Porta objetos</div>
+        <div class="chip">Cuidado de niños</div><div class="chip">Peinado/maquillaje</div>
+        <div class="chip ok">Ninguno</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Acompañantes <span class="small">(agregá solo las plazas ocupadas)</span></h2>
+      <div id="a-occ-list"></div>
+      <button class="btn ghost" id="a-add-occ">＋ Agregar acompañante</button>
+    </div>
+
+    <button class="btn primary" id="a-save">✔ GUARDAR AUTO</button>
+  </div>
+
+  <!-- ---------- FORM MOTOS ---------- -->
+  <div id="form-moto" style="display:none">
+    <div class="card">
+      <h2>Vehículo</h2>
+      <label class="fld">Tipo</label>
+      <div class="chips" data-single="m-tipo">
+        <div class="chip">Motocicleta</div><div class="chip">Ciclomotor</div>
+      </div>
+      <label class="fld">¿Tiene caja (delivery)?</label>
+      <div class="chips" data-single="m-caja">
+        <div class="chip">Sí</div><div class="chip">No</div>
+      </div>
+      <label class="fld">Uso</label>
+      <div class="chips" data-single="m-uso">
+        <div class="chip">Particular</div><div class="chip">Comercial</div>
+      </div>
+      <label class="fld">Antigüedad</label>
+      <div class="chips" data-single="m-antig">
+        <div class="chip">− de 10 años</div><div class="chip">+ de 10 años</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Luces encendidas</label>
+      <div class="chips" data-single="m-luces">
+        <div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Conductor (P1)</h2>
+      <label class="fld">Sexo</label>
+      <div class="chips" data-single="m-p1-sexo">
+        <div class="chip">Masculino</div><div class="chip">Femenino</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Edad aproximada</label>
+      <div class="chips" data-single="m-p1-edad">
+        <div class="chip">0–14</div><div class="chip">15–24</div><div class="chip">25–39</div>
+        <div class="chip">40–59</div><div class="chip">60+</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Usa casco</label>
+      <div class="chips" data-single="m-p1-casco">
+        <div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div>
+      </div>
+      <label class="fld">Factores de distracción (podés marcar varios)</label>
+      <div class="chips" data-multi="m-p1-dist">
+        <div class="chip">Celular</div><div class="chip">Come o bebe</div><div class="chip">Fuma</div>
+        <div class="chip">Auriculares</div><div class="chip">Porta objetos</div>
+        <div class="chip">Cuidado de niños</div>
+        <div class="chip ok">Ninguno</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Pasajeros <span class="small">(agregá solo si viajan más personas)</span></h2>
+      <div id="m-occ-list"></div>
+      <button class="btn ghost" id="m-add-occ">＋ Agregar pasajero</button>
+    </div>
+
+    <button class="btn primary" id="m-save">✔ GUARDAR MOTO</button>
+  </div>
+</section>
+
+<!-- ====================== DATOS ====================== -->
+<section class="screen" id="scr-datos">
+  <div class="card">
+    <h2>Registros guardados</h2>
+    <div class="counter" style="margin-bottom:8px">
+      <div class="cnt"><div class="n" id="d-cnt-a">0</div><div class="l">Autos</div></div>
+      <div class="cnt"><div class="n" id="d-cnt-m">0</div><div class="l">Motos</div></div>
+    </div>
+    <div id="lista-recs"><p class="small">Todavía no hay registros.</p></div>
+  </div>
+  <div class="card">
+    <h2>Exportar y enviar</h2>
+    <p class="small">Al finalizar el turno, exportá los datos y envialos al docente (WhatsApp, correo o Drive). El archivo CSV se abre directamente en Excel.</p>
+    <button class="btn dark" id="btn-exp-a">⬇ Exportar CSV — AUTOS</button>
+    <button class="btn dark" id="btn-exp-m">⬇ Exportar CSV — MOTOS</button>
+    <button class="btn ghost" id="btn-share">📤 Compartir archivos (WhatsApp / correo)</button>
+    <hr class="sep">
+    <button class="btn danger" id="btn-clear">🗑 Borrar todos los registros</button>
+    <p class="small">Los datos quedan guardados en este teléfono aunque cierres el navegador o pierdas señal. Solo se borran con el botón de arriba.</p>
+  </div>
+  <div class="card">
+    <h2>Ficha del turno</h2>
+    <div class="small" id="ficha">—</div>
+    <button class="btn ghost" id="btn-editar-cfg">✎ Editar datos del turno</button>
+  </div>
+  <div class="card">
+    <h2>Diagnóstico del teléfono</h2>
+    <p class="small">Verificá acá que tu teléfono guarde bien los datos. Hacelo una vez, antes del operativo.</p>
+    <div class="small" id="diag">Comprobando…</div>
+    <button class="btn ghost" id="btn-diag">🔍 Volver a comprobar</button>
+  </div>
+</section>
+
+</main>
+
+<nav>
+  <button id="nav-reg" class="on"><span class="ico">📝</span>Registrar</button>
+  <button id="nav-datos"><span class="ico">📊</span>Datos</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Estado ================= */
+var mem = {cfg:null, recs:[]};
+var canStore = true;
+try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }
+catch(e){ canStore = false; }
+
+function load(){
+  if(!canStore) return;
+  try{
+    var c = localStorage.getItem('rv_cfg'); if(c) mem.cfg = JSON.parse(c);
+    var r = localStorage.getItem('rv_recs'); if(r) mem.recs = JSON.parse(r);
+  }catch(e){}
+}
+function persist(){
+  if(!canStore) return;
+  try{
+    localStorage.setItem('rv_cfg', JSON.stringify(mem.cfg||null));
+    localStorage.setItem('rv_recs', JSON.stringify(mem.recs));
+  }catch(e){ toast('⚠ No se pudo guardar en el teléfono'); }
+}
+
+/* ================= Utilidades UI ================= */
+function $(s){ return document.querySelector(s); }
+function $all(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+function toast(msg){
+  var t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 1900);
+}
+/* chips single */
+document.addEventListener('click', function(ev){
+  var chip = ev.target.closest('.chip'); if(!chip) return;
+  var wrap = chip.parentElement;
+  if(wrap.hasAttribute('data-single')){
+    $all('[data-single="'+wrap.getAttribute('data-single')+'"] .chip').forEach(function(c){
+      if(c.parentElement===wrap) c.classList.remove('on');
+    });
+    chip.classList.add('on');
+    if(wrap.getAttribute('data-single')==='a-uso') toggleTipoAuto();
+    if(wrap.getAttribute('data-single')==='semaforo') toggleSemExtra();
+  } else if(wrap.hasAttribute('data-multi')){
+    var isNone = chip.textContent.trim()==='Ninguno';
+    if(isNone){
+      wrap.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
+      chip.classList.add('on');
+    } else {
+      chip.classList.toggle('on');
+      var none = Array.prototype.find.call(wrap.querySelectorAll('.chip'),function(c){return c.textContent.trim()==='Ninguno';});
+      if(none) none.classList.remove('on');
+    }
+  }
+});
+function getSingle(name, scope){
+  var root = scope || document;
+  var el = root.querySelector('[data-single="'+name+'"] .chip.on');
+  return el ? el.textContent.trim() : '';
+}
+function getMulti(name){
+  return $all('[data-multi="'+name+'"] .chip.on').map(function(c){return c.textContent.trim();}).join(' | ');
+}
+function clearGroup(sel){
+  $all(sel+' .chip.on').forEach(function(c){c.classList.remove('on');});
+}
+function toggleTipoAuto(){
+  var uso = getSingle('a-uso');
+  $('#a-tipo-part').style.display = (uso==='Particular'||uso==='') ? '' : 'none';
+  $('#a-tipo-com').style.display = (uso==='Comercial / Institucional') ? '' : 'none';
+}
+function toggleSemExtra(){
+  var s = mem.cfg ? mem.cfg.semaforo : getSingle('semaforo');
+  $('#a-sem-extra').style.display = (s==='Sí') ? '' : 'none';
+}
+
+/* ================= Ocupantes dinámicos ================= */
+var POS_AUTO = ['P2 (copiloto)','P3 (trasero)','P4 (trasero)','P5 (trasero)'];
+var POS_MOTO = ['P2','P3','P4','P5'];
+
+function occHTML(univ, idx, posLabel){
+  var pref = univ+'-occ'+idx;
+  var prot = univ==='a'
+    ? '<label class="fld">Protección (excluyente: cinturón o SRI)</label>'+
+      '<div class="chips" data-single="'+pref+'-prot">'+
+      '<div class="chip ok">Cinturón Sí</div><div class="chip no">Cinturón No</div>'+
+      '<div class="chip sri">SRI Sí</div><div class="chip no">SRI No</div>'+
+      '<div class="chip so">S/O</div></div>'
+    : '<label class="fld">Usa casco</label>'+
+      '<div class="chips" data-single="'+pref+'-casco">'+
+      '<div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div></div>';
+  return '<div class="occ" id="'+pref+'">'+
+    '<div class="t">'+posLabel+' <button class="rm" data-rm="'+pref+'">Quitar ✕</button></div>'+
+    '<label class="fld">Sexo</label>'+
+    '<div class="chips" data-single="'+pref+'-sexo">'+
+    '<div class="chip">Masculino</div><div class="chip">Femenino</div><div class="chip so">S/O</div></div>'+
+    '<label class="fld">Edad aproximada</label>'+
+    '<div class="chips" data-single="'+pref+'-edad">'+
+    '<div class="chip">0–4</div><div class="chip">5–14</div><div class="chip">15–24</div>'+
+    '<div class="chip">25–39</div><div class="chip">40–59</div><div class="chip">60+</div>'+
+    '<div class="chip so">S/O</div></div>'+ prot + '</div>';
+}
+function addOcc(univ){
+  var list = $('#'+univ+'-occ-list');
+  var n = list.children.length;
+  var labels = univ==='a' ? POS_AUTO : POS_MOTO;
+  if(n >= labels.length){ toast('Máximo de plazas alcanzado'); return; }
+  var div = document.createElement('div');
+  div.innerHTML = occHTML(univ, n+2, labels[n]);
+  list.appendChild(div.firstChild);
+}
+document.addEventListener('click', function(ev){
+  var rm = ev.target.closest('[data-rm]'); if(!rm) return;
+  var el = document.getElementById(rm.getAttribute('data-rm'));
+  if(el) el.remove();
+});
+$('#a-add-occ').addEventListener('click', function(){ addOcc('a'); });
+$('#m-add-occ').addEventListener('click', function(){ addOcc('m'); });
+
+/* ================= Config ================= */
+$('#cfg-po').addEventListener('change', function(){
+  $('#cfg-po-otro-wrap').style.display = this.value==='OTRO' ? '' : 'none';
+  if(this.value.indexOf('PO-')===0){
+    $all('[data-single="semaforo"] .chip').forEach(function(c){
+      c.classList.toggle('on', c.textContent.trim()==='Sí');
+    });
+  }
+});
+$('#btn-iniciar').addEventListener('click', function(){
+  var nombre = $('#cfg-nombre').value.trim();
+  var po = $('#cfg-po').value;
+  if(po==='OTRO') po = 'OTRO: '+$('#cfg-po-otro').value.trim();
+  var cfg = {
+    nombre:nombre, po:po,
+    turno:getSingle('turno'), semaforo:getSingle('semaforo'),
+    via:getSingle('via'), calzada:getSingle('calzada'),
+    ilum:getSingle('ilum'), clima:getSingle('clima'), term:getSingle('term')
+  };
+  if(!cfg.nombre || !cfg.po || !cfg.turno || !cfg.semaforo){
+    toast('Completá al menos: nombre, PO, turno y semáforo'); return;
+  }
+  mem.cfg = cfg; persist();
+  paintCfg(); showScreen('reg'); toggleSemExtra();
+  toast('¡Listo! Podés empezar a registrar');
+});
+$('#btn-editar-cfg').addEventListener('click', function(){ showScreen('config'); });
+
+function paintCfg(){
+  if(!mem.cfg){ $('#hdrPO').textContent='—'; return; }
+  $('#hdrPO').textContent = mem.cfg.po.split('·')[0].trim();
+  $('#ficha').innerHTML =
+    '<b>Observador:</b> '+mem.cfg.nombre+'<br>'+
+    '<b>PO:</b> '+mem.cfg.po+'<br>'+
+    '<b>Turno:</b> '+mem.cfg.turno+' · <b>Semáforo:</b> '+mem.cfg.semaforo+'<br>'+
+    '<b>Vía:</b> '+(mem.cfg.via||'—')+' · <b>Calzada:</b> '+(mem.cfg.calzada||'—')+
+    ' · <b>Iluminación:</b> '+(mem.cfg.ilum||'—')+'<br>'+
+    '<b>Clima:</b> '+(mem.cfg.clima||'—')+' · <b>Térmica:</b> '+(mem.cfg.term||'—');
+}
+
+/* ================= Guardado de registros ================= */
+var DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+function nowMeta(){
+  var d = new Date();
+  function p(x){return (x<10?'0':'')+x;}
+  return {
+    fecha: p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear(),
+    hora: p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()),
+    dia: DIAS[d.getDay()], ts: d.getTime()
+  };
+}
+function collectOccs(univ){
+  var out = [];
+  $all('#'+univ+'-occ-list .occ').forEach(function(occ){
+    var pref = occ.id;
+    var o = {
+      pos: occ.querySelector('.t').textContent.replace('Quitar ✕','').trim(),
+      sexo: getSingle(pref+'-sexo', occ),
+      edad: getSingle(pref+'-edad', occ)
+    };
+    if(univ==='a'){ o.prot = getSingle(pref+'-prot', occ); }
+    else { o.casco = getSingle(pref+'-casco', occ); }
+    out.push(o);
+  });
+  return out;
+}
+$('#a-save').addEventListener('click', function(){
+  if(!mem.cfg){ toast('Primero completá los datos del turno'); showScreen('config'); return; }
+  var uso = getSingle('a-uso');
+  var r = {
+    univ:'AUTO', meta:nowMeta(), cfg:mem.cfg,
+    uso:uso,
+    tipo: uso==='Comercial / Institucional' ? getSingle('a-tipoc') : getSingle('a-tipop'),
+    antig:getSingle('a-antig'), luces:getSingle('a-luces'),
+    respeta:getSingle('a-resp'),
+    p1:{sexo:getSingle('a-p1-sexo'), edad:getSingle('a-p1-edad'),
+        cint:getSingle('a-p1-cint'), dist:getMulti('a-p1-dist')},
+    occs: collectOccs('a')
+  };
+  if(!r.uso || !r.p1.cint){ toast('Faltan datos clave: uso del vehículo y cinturón del conductor'); return; }
+  mem.recs.push(r); persist(); resetAuto(); paintCounts();
+  toast('🚗 Auto Nº '+mem.recs.filter(function(x){return x.univ==='AUTO';}).length+' guardado');
+});
+$('#m-save').addEventListener('click', function(){
+  if(!mem.cfg){ toast('Primero completá los datos del turno'); showScreen('config'); return; }
+  var r = {
+    univ:'MOTO', meta:nowMeta(), cfg:mem.cfg,
+    tipo:getSingle('m-tipo'), caja:getSingle('m-caja'), uso:getSingle('m-uso'),
+    antig:getSingle('m-antig'), luces:getSingle('m-luces'),
+    p1:{sexo:getSingle('m-p1-sexo'), edad:getSingle('m-p1-edad'),
+        casco:getSingle('m-p1-casco'), dist:getMulti('m-p1-dist')},
+    occs: collectOccs('m')
+  };
+  if(!r.tipo || !r.p1.casco){ toast('Faltan datos clave: tipo de vehículo y casco del conductor'); return; }
+  mem.recs.push(r); persist(); resetMoto(); paintCounts();
+  toast('🏍️ Moto Nº '+mem.recs.filter(function(x){return x.univ==='MOTO';}).length+' guardada');
+});
+function resetAuto(){
+  ['a-uso','a-tipop','a-tipoc','a-antig','a-luces','a-resp','a-p1-sexo','a-p1-edad','a-p1-cint']
+    .forEach(function(g){ clearGroup('[data-single="'+g+'"]'); });
+  clearGroup('[data-multi="a-p1-dist"]');
+  $('#a-occ-list').innerHTML=''; toggleTipoAuto();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function resetMoto(){
+  ['m-tipo','m-caja','m-uso','m-antig','m-luces','m-p1-sexo','m-p1-edad','m-p1-casco']
+    .forEach(function(g){ clearGroup('[data-single="'+g+'"]'); });
+  clearGroup('[data-multi="m-p1-dist"]');
+  $('#m-occ-list').innerHTML='';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ================= Contadores + lista ================= */
+function paintCounts(){
+  var a = mem.recs.filter(function(r){return r.univ==='AUTO';}).length;
+  var m = mem.recs.filter(function(r){return r.univ==='MOTO';}).length;
+  $('#cnt-a').textContent=a; $('#cnt-m').textContent=m; $('#cnt-t').textContent=a+m;
+  $('#d-cnt-a').textContent=a; $('#d-cnt-m').textContent=m;
+  paintList();
+}
+function paintList(){
+  var box = $('#lista-recs');
+  if(!mem.recs.length){ box.innerHTML='<p class="small">Todavía no hay registros.</p>'; return; }
+  var html='';
+  mem.recs.slice().reverse().forEach(function(r, i){
+    var realIdx = mem.recs.length-1-i;
+    var ico = r.univ==='AUTO'?'🚗':'🏍️';
+    var det = r.univ==='AUTO'
+      ? (r.tipo||'—')+' · cinturón P1: '+(r.p1.cint||'—')
+      : (r.tipo||'—')+' · casco P1: '+(r.p1.casco||'—');
+    html += '<div class="rec"><div>'+ico+' <b>'+r.univ+'</b> · '+det+
+      '<div class="meta">'+r.meta.hora+' · '+(1+r.occs.length)+' ocupante(s)</div></div>'+
+      '<button data-del="'+realIdx+'">Eliminar</button></div>';
+  });
+  box.innerHTML = html;
+}
+document.addEventListener('click', function(ev){
+  var del = ev.target.closest('[data-del]'); if(!del) return;
+  var idx = parseInt(del.getAttribute('data-del'),10);
+  if(confirm('¿Eliminar este registro? No se puede deshacer.')){
+    mem.recs.splice(idx,1); persist(); paintCounts();
+  }
+});
+
+/* ================= Export CSV ================= */
+function csvEsc(v){ v = (v==null?'':String(v)); return '"'+v.replace(/"/g,'""')+'"'; }
+function buildCSV(univ){
+  var rows = mem.recs.filter(function(r){return r.univ===univ;});
+  var head = ['universo','fecha','hora','dia_semana','observador','PO','turno','semaforo_PO',
+    'tipo_via','calzada','iluminacion','clima','sens_termica',
+    'uso_vehiculo','tipo_vehiculo','caja','antiguedad','luces','respeta_semaforo',
+    'P1_sexo','P1_edad','P1_proteccion','P1_distracciones','plazas_ocupadas'];
+  for(var i=2;i<=5;i++) head.push('P'+i+'_posicion','P'+i+'_sexo','P'+i+'_edad','P'+i+'_proteccion');
+  var lines = [head.map(csvEsc).join(';')];
+  rows.forEach(function(r){
+    var base = [r.univ, r.meta.fecha, r.meta.hora, r.meta.dia,
+      r.cfg.nombre, r.cfg.po, r.cfg.turno, r.cfg.semaforo,
+      r.cfg.via, r.cfg.calzada, r.cfg.ilum, r.cfg.clima, r.cfg.term,
+      r.uso||'', r.tipo||'', r.caja||'', r.antig||'', r.luces||'', r.respeta||'',
+      r.p1.sexo, r.p1.edad, (r.univ==='AUTO'? ('Cinturón '+(r.p1.cint||'')) : ('Casco '+(r.p1.casco||''))),
+      r.p1.dist||'', 1+r.occs.length];
+    for(var i=0;i<4;i++){
+      var o = r.occs[i];
+      if(o) base.push(o.pos, o.sexo, o.edad, (r.univ==='AUTO'? (o.prot||'') : ('Casco '+(o.casco||''))));
+      else base.push('','','','');
+    }
+    lines.push(base.map(csvEsc).join(';'));
+  });
+  return '\uFEFF'+lines.join('\r\n');
+}
+function fileName(univ){
+  var po = mem.cfg ? mem.cfg.po.split('·')[0].trim().replace(/\s+/g,'') : 'PO';
+  var d = new Date(); function p(x){return (x<10?'0':'')+x;}
+  return 'Obs_'+univ+'_'+po+'_'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'.csv';
+}
+function download(univ){
+  var n = mem.recs.filter(function(r){return r.univ===univ;}).length;
+  if(!n){ toast('No hay registros de '+(univ==='AUTO'?'autos':'motos')); return; }
+  var blob = new Blob([buildCSV(univ)], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = fileName(univ);
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('CSV de '+(univ==='AUTO'?'autos':'motos')+' descargado ('+n+' registros)');
+}
+$('#btn-exp-a').addEventListener('click', function(){ download('AUTO'); });
+$('#btn-exp-m').addEventListener('click', function(){ download('MOTO'); });
+$('#btn-share').addEventListener('click', function(){
+  var files = [];
+  ['AUTO','MOTO'].forEach(function(u){
+    if(mem.recs.some(function(r){return r.univ===u;}))
+      files.push(new File([buildCSV(u)], fileName(u), {type:'text/csv'}));
+  });
+  if(!files.length){ toast('No hay registros para compartir'); return; }
+  if(navigator.canShare && navigator.canShare({files:files})){
+    navigator.share({files:files, title:'Relevamiento vial', text:'Datos del operativo — '+(mem.cfg?mem.cfg.po:'')})
+      .catch(function(){});
+  } else {
+    toast('Tu navegador no permite compartir; usá los botones de descarga');
+  }
+});
+$('#btn-clear').addEventListener('click', function(){
+  if(!mem.recs.length){ toast('No hay registros'); return; }
+  if(confirm('¿Borrar TODOS los registros ('+mem.recs.length+')? Asegurate de haberlos exportado antes.')){
+    if(confirm('Confirmación final: esta acción no se puede deshacer. ¿Borrar todo?')){
+      mem.recs = []; persist(); paintCounts(); toast('Registros eliminados');
+    }
+  }
+});
+
+/* ================= Navegación ================= */
+function showScreen(name){
+  $all('.screen').forEach(function(s){s.classList.remove('on');});
+  $('#scr-'+name).classList.add('on');
+  $('#nav-reg').classList.toggle('on', name==='reg');
+  $('#nav-datos').classList.toggle('on', name==='datos');
+  window.scrollTo(0,0);
+}
+$('#nav-reg').addEventListener('click', function(){
+  showScreen(mem.cfg ? 'reg' : 'config');
+});
+$('#nav-datos').addEventListener('click', function(){ showScreen('datos'); });
+$('#tab-auto').addEventListener('click', function(){
+  this.classList.add('on'); $('#tab-moto').classList.remove('on');
+  $('#form-auto').style.display=''; $('#form-moto').style.display='none';
+});
+$('#tab-moto').addEventListener('click', function(){
+  this.classList.add('on'); $('#tab-auto').classList.remove('on');
+  $('#form-moto').style.display=''; $('#form-auto').style.display='none';
+});
+
+/* ================= Service worker + persistencia ================= */
+var swOK = false, persistOK = null;
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').then(function(){
+      swOK = true; pintarDiag();
+    }).catch(function(){ swOK = false; pintarDiag(); });
+  });
+}
+/* Pedir al navegador que proteja los datos de las limpiezas automáticas */
+if(navigator.storage && navigator.storage.persist){
+  navigator.storage.persisted().then(function(ya){
+    if(ya){ persistOK = true; pintarDiag(); return; }
+    navigator.storage.persist().then(function(ok){ persistOK = ok; pintarDiag(); });
+  }).catch(function(){});
+}
+
+/* ================= Diagnóstico ================= */
+function pintarDiag(){
+  var box = $('#diag'); if(!box) return;
+  var https = location.protocol === 'https:';
+  var local = location.protocol === 'file:';
+  var instalada = window.matchMedia('(display-mode: standalone)').matches ||
+                  window.navigator.standalone === true;
+
+  /* prueba real de escritura y lectura */
+  var guarda = false;
+  try{
+    localStorage.setItem('__diag', 'ok');
+    guarda = localStorage.getItem('__diag') === 'ok';
+    localStorage.removeItem('__diag');
+  }catch(e){ guarda = false; }
+
+  function fila(ok, texto, detalle){
+    var ico = ok===true ? '✅' : (ok===false ? '❌' : '⏳');
+    return '<div style="margin:6px 0">'+ico+' <b>'+texto+'</b>'+
+           (detalle ? '<br><span style="opacity:.75">'+detalle+'</span>' : '')+'</div>';
+  }
+
+  var html = '';
+  html += fila(guarda, 'Guardado de datos',
+    guarda ? 'Tu teléfono guarda los registros correctamente.'
+           : 'ATENCIÓN: no se puede guardar. Revisá que Chrome permita cookies y que no estés en pestaña de incógnito.');
+  html += fila(https ? true : false, 'Dirección segura (https)',
+    https ? 'Abriste la app desde la dirección web correcta.'
+          : (local ? 'Estás abriendo un archivo descargado. Usá el enlace web que envió el profesor.'
+                   : 'Origen: ' + location.protocol));
+  html += fila(swOK, 'Funciona sin señal',
+    swOK ? 'La app ya quedó guardada: podés usarla sin datos ni wifi.'
+         : 'Todavía no. Mantené conexión unos segundos y volvé a comprobar.');
+  html += fila(persistOK===null ? null : persistOK, 'Protección contra borrado automático',
+    persistOK===true ? 'El sistema no borrará tus datos por limpieza automática.'
+                     : 'Tu teléfono no otorgó esta protección. Exportá seguido por las dudas.');
+  html += fila(instalada, 'Instalada en la pantalla de inicio',
+    instalada ? 'Estás usando la app instalada. Perfecto.'
+              : 'Usá el menú de Chrome → "Instalar aplicación" o "Agregar a pantalla principal".');
+  html += '<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--line);opacity:.7">'+
+          'Registros guardados ahora mismo: <b>'+mem.recs.length+'</b><br>'+
+          'Dirección: '+location.href.split('?')[0]+'</div>';
+  box.innerHTML = html;
+}
+$('#btn-diag').addEventListener('click', function(){
+  pintarDiag(); toast('Diagnóstico actualizado');
+});
+
+/* ================= Inicio ================= */
+load();
+if(mem.cfg){
+  paintCfg(); toggleSemExtra(); showScreen('reg');
+} else {
+  showScreen('config');
+}
+paintCounts();
+pintarDiag();
+if(!canStore){
+  var w = document.createElement('div'); w.className='warn';
+  w.textContent='⚠ Atención: este navegador no permite guardado permanente. Los datos se pierden si cerrás la pestaña. Exportá el CSV con frecuencia.';
+  $('#scr-reg').insertBefore(w, $('#scr-reg').firstChild);
+}
+</script>
+</body>
+</html>
