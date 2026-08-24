@@ -266,6 +266,12 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <div class="chips" data-single="m-luces">
         <div class="chip ok">Sí</div><div class="chip no">No</div><div class="chip so">S/O</div>
       </div>
+      <div id="m-sem-extra" style="display:none">
+        <label class="fld">Respeta el semáforo</label>
+        <div class="chips" data-single="m-resp">
+          <div class="chip ok">Sí</div><div class="chip no">No, cruza en amarillo/rojo</div><div class="chip so">S/O</div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -415,6 +421,7 @@ function toggleTipoAuto(){
 function toggleSemExtra(){
   var s = mem.cfg ? mem.cfg.semaforo : getSingle('semaforo');
   $('#a-sem-extra').style.display = (s==='Sí') ? '' : 'none';
+  var me = $('#m-sem-extra'); if(me) me.style.display = (s==='Sí') ? '' : 'none';
 }
 
 /* ================= Ocupantes dinámicos ================= */
@@ -549,6 +556,7 @@ $('#m-save').addEventListener('click', function(){
     univ:'MOTO', meta:nowMeta(), cfg:mem.cfg,
     tipo:getSingle('m-tipo'), caja:getSingle('m-caja'), uso:getSingle('m-uso'),
     antig:getSingle('m-antig'), luces:getSingle('m-luces'),
+    respeta:getSingle('m-resp'),
     p1:{sexo:getSingle('m-p1-sexo'), edad:getSingle('m-p1-edad'),
         casco:getSingle('m-p1-casco'), dist:getMulti('m-p1-dist')},
     occs: collectOccs('m')
@@ -565,7 +573,7 @@ function resetAuto(){
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function resetMoto(){
-  ['m-tipo','m-caja','m-uso','m-antig','m-luces','m-p1-sexo','m-p1-edad','m-p1-casco']
+  ['m-tipo','m-caja','m-uso','m-antig','m-luces','m-resp','m-p1-sexo','m-p1-edad','m-p1-casco']
     .forEach(function(g){ clearGroup('[data-single="'+g+'"]'); });
   clearGroup('[data-multi="m-p1-dist"]');
   $('#m-occ-list').innerHTML='';

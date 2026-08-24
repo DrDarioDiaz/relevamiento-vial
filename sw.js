@@ -5,7 +5,7 @@
    de VERSION (v1 -> v2 -> v3...). Eso obliga a los teléfonos a descargar la
    versión nueva la próxima vez que tengan señal. */
 
-var VERSION = 'rv-v1';
+var VERSION = 'rv-v2';
 var ASSETS = [
   './',
   './index.html',
